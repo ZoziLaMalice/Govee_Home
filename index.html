@@ -6,12 +6,16 @@
         <title>Document</title>
         <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
         {{ colorpicker.loader() }}
-        {{ colorpicker.picker(ids=['.inp', '.inpa']) }}
+        {{ colorpicker.picker(ids=['.inp'], color_format='hex', default_color='#db34eb') }}
     </head>
     <body>
         <form action="/color" method="post">
-            <input name="rgb" class='inp' value='rgb(0,255,0,1)' />
+            <input name="rgb" class='inp'/>
             <input type="submit" value="Submit">
+        </form>
+        <form method="POST" action="/slider">
+            <input type="range" min="-10" max="10" name="warm" />
+            <input type="submit" value="submit" />
         </form>
     </body>
 </html>
