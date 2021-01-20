@@ -1,48 +1,80 @@
 from flask import Flask, render_template, redirect, request
 from govee_btled import BluetoothLED
-from flask_colorpicker import colorpicker
 
-app = Flask(__name__, template_folder='.')
-colorpicker(app, local=['static/spectrum.js', 'static/spectrum.css'])
+from pygatt.exceptions import NotConnectedError
+from govee_btled.errors import ConnectionTimeout
 
-led = BluetoothLED('a4:c1:38:53:b5:c9')
+from flask_socketio import SocketIO, emit
 
-@app.route('/')
+app = Flask(__name__)
+
+@app.route('/', methods=['POST', 'GET'])
 def root():
-    return render_template('index.html')
+    try:
+        global room_led
+        room_led = BluetoothLED('a4:c1:38:53:b5:c9')
+        room_led_status = 'connected'
+        print('YEAHHHHH')
+    except Exception:
+        room_led_status = 'disconnected'
+        print('FUCKKKKKKK')
+
+    # try:
+    #     global kitchen_led
+    #     kitchen_led = BluetoothLED('a4:c1:38:e2:f4:10')
+    #     kitchen_led_status = 'connected'
+    # except Exception:
+    #     kitchen_led_status = 'disconnected'
+
+    return render_template('index.html', room=room_led_status, kitchen='disconnected')#kitchen_led_status)
+
+socketio = SocketIO(app)
 
 
-@app.route('/color', methods=['POST'])
-def color():
-    color = request.form.get('rgb')
-    led.set_color(color)
-    return redirect('/')
+@socketio.on('on_off_cuisine')
+def handle_power_cuisine(json):
+    state = json['status']
+    print('State = ', state)
 
 
-@app.route('/switch', methods=['POST'])
-def switch():
-    switch = request.form.get('switcher')
-    if switch:
-        print(switch)
-        led.set_state(True)
-    # return redirect('/')
-        return render_template('index.html', switch="checked")
-    else:
-        led.set_state(False)
-        return render_template('index.html', switch="")
+@socketio.on('on_off_chambre')
+def handle_power_chambre(json):
+    state = json['status']
+    room_led.set_state(state)
 
 
-@app.route("/slider", methods=["POST"])
-def slider():
-    slider = request.form["warm"]
-    print(slider)
-    return redirect('/')
+@socketio.on('cuisine')
+def handle_cuisine(json):
+    cuisine = json['status']
+    print('State = ', cuisine)
 
 
-@app.route("/brightness", methods=["POST"])
-def brightness():
-    bright = request.form["bright"]
-    led.set_brightness(bright)
-    return redirect('/')
+@socketio.on('chambre')
+def handle_chambre(json):
+    chambre = json['status']
+    print('State = ', chambre)
 
-app.run(debug=True, port=4000, host="0.0.0.0")
+
+@socketio.on('change_rgb')
+def handle_color(json):
+    rgb = json['color']
+    room_led.set_color(rgb)
+
+
+@socketio.on('change_white')
+def handle_white(json):
+    white = json['white']
+    room_led.set_color_white(float(white))
+
+
+@socketio.on('change_brightness')
+def handle_brightness(json):
+    brightness = json['brightness']
+    room_led.set_brightness(float(brightness))
+
+
+@socketio.on('connect', namespace='/')
+def test_connect():
+    print('Connected')
+
+socketio.run(app, debug=True, port=4000, host="0.0.0.0")

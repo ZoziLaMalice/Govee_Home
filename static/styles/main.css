@@ -1,3 +1,62 @@
+/* Custom CSS */
+body {
+  background: #171c33;
+}
+
+h1 {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  font-size: 20;
+  color: white;
+}
+
+h3 {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 15;
+  color: white;
+  text-align: center;
+}
+
+.connected {
+  color: #1dbf35;
+}
+
+.disconnected {
+  color: red;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.item {
+  margin: 10px;
+}
+
+.top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 20vh;
+  justify-content: space-around;
+}
+
+.check {
+  margin: 5px;
+}
+
+.connect {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 /* The switch - the box around the slider */
 .switch {
   position: relative;
@@ -39,11 +98,11 @@
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: #1dbf35;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px #1dbf35;
 }
 
 input:checked + .slider:before {
