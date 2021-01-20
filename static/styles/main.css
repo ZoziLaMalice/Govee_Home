@@ -1,4 +1,5 @@
 /* Custom CSS */
+/* HTML Elements*/
 body {
   background: #171c33;
 }
@@ -6,7 +7,7 @@ body {
 h1 {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
-  font-size: 20;
+  font-size: 25;
   color: white;
 }
 
@@ -17,22 +18,30 @@ h3 {
   text-align: center;
 }
 
+/*CSS Classes*/
 .connected {
-  color: #1dbf35;
+  background-color: #1dbf35;
+  color: black;
+  border: 2px solid black;
 }
 
 .disconnected {
-  color: red;
+  background-color: red;
+  color: white;
+  border: 2px solid white;
 }
 
 .container {
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
 }
 
 .item {
-  margin: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 0px;
+  margin-bottom: 10px;
 }
 
 .top {
@@ -45,8 +54,8 @@ h3 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 20vh;
-  justify-content: space-around;
+  height: 11vh;
+  justify-content: space-between;
 }
 
 .check {
@@ -55,8 +64,39 @@ h3 {
 
 .connect {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 7px 18px;
 }
 
+/*IDs Loading*/
+#loading {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  background: #171c33;
+}
+
+#loader {
+  width: 40vw;
+  height: 100vh;
+  animation: rotation 2s infinite linear;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+/*All Classes About The Switch*/
 /* The switch - the box around the slider */
 .switch {
   position: relative;

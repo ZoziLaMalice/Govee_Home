@@ -4,6 +4,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Govee Home</title>
+        <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/light-bulb.svg') }}" />
         <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.0/socket.io.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/spectrum-colorpicker2/dist/spectrum.min.js"></script>
@@ -12,35 +13,40 @@
         <script type="text/javascript" src="{{ url_for('static', filename='scripts/main.js') }}"></script>
     </head>
     <body>
+        <div id="loading">
+            <img src="{{ url_for('static', filename='images/sun.svg') }}" alt="Loading..." id="loader">
+        </div>
         <div class="container">
-            <form action="/" method="post">
-                <div class="item">
-                    <button class="connect">Connect Devices</button>
-                </div>
-            </form>
+            <div class="title">
+                <h1>Govee Home</h1>
+            </div>
             <div class="top">
                 <div class="item column">
-                    <h1 class={{ kitchen }}>Cuisine</h1>
+                    <form action="/" method="post">
+                        <button class="connect {{ kitchen }}" name="btn" value="cuisine">Cuisine</button>
+                    </form>
                     <label class="switch">
                         <input type="checkbox" name="switcher" id="switch_cuisine">
                         <span class="slider round"></span>
                     </label>
-                    <input type="checkbox" class="check" id="cuisine">
+                    <!-- <input type="checkbox" class="check" id="cuisine"> -->
                 </div>
                 <div class="item column">
-                    <h1 class={{ room }}>Chambre</h1>
+                    <form action="/" method="post">
+                        <button class="connect {{ room }}" name="btn" value="chambre">Chambre</button>
+                    </form>
                     <label class="switch">
                         <input type="checkbox" name="switcher" id="switch_chambre">
                         <span class="slider round"></span>
                     </label>
-                    <input type="checkbox" class="check" id="chambre">
+                    <!-- <input type="checkbox" class="check" id="chambre"> -->
                 </div>
             </div>
             <div class="item">
                 <input id="color-picker" value='#276cb8' />
             </div>
             <div class="item">
-                <h3>Cold & Warm White</h3>
+                <h3>Warm --------- Cold</h3>
                 <input type="range" min="-1" max="1" id="cold_warm" step="0.01" />
             </div>
             <div class="item">

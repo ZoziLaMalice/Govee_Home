@@ -1,5 +1,23 @@
-var socket = io.connect('http://192.168.1.36:4000');
+/*Loading Function*/
+function onReady(callback) {
+  var intervalId = window.setInterval(function() {
+    if (document.getElementsByTagName('body')[0] !== undefined) {
+      window.clearInterval(intervalId);
+      callback.call(this);
+    }
+  }, 1000);
+}
 
+function setVisible(selector, visible) {
+  document.querySelector(selector).style.display = visible ? 'flex' : 'none';
+}
+
+onReady(function() {
+  setVisible('.container', true);
+  setVisible('#loading', false);
+});
+
+/*ColorPicker*/
 $(document).ready(function() {
     $('#color-picker').spectrum({
         type: "flat",
@@ -12,14 +30,17 @@ $(document).ready(function() {
         });
 });
 
+/*WebSocket with Python*/
+var socket = io.connect('http://192.168.1.36:4000');
+
 socket.on('connect', function () {
     console.log('connected')
 
     document.getElementById('switch_cuisine').addEventListener('change', () => {
         if (document.getElementById('switch_cuisine').checked) {
-            socket.emit('on_off_cuisine', { status: 'True' });
+            socket.emit('on_off_cuisine', { status: 1 });
         } else {
-            socket.emit('on_off_cuisine', { status: 'False' });
+            socket.emit('on_off_cuisine', { status: 0 });
         }
     });
 
@@ -31,6 +52,7 @@ socket.on('connect', function () {
         }
     });
 
+    /*
     document.getElementById('cuisine').addEventListener('change', () => {
         if (document.getElementById('cuisine').checked) {
             socket.emit('cuisine', { status: 'True' });
@@ -46,6 +68,7 @@ socket.on('connect', function () {
             socket.emit('chambre', { status: 'False' });
         }
     });
+    */
 
     $("#color-picker").on('move.spectrum', function(e, tinycolor) {
         socket.emit('change_rgb', { color: tinycolor.toHexString() });
